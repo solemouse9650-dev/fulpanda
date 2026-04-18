@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Rechazado - Food Panda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .details h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .details li {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .details li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #ff6666;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #ff4444;
+        }
+
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .help-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .help-section h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .contact-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .contact-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-icon">❌</div>
+        <h1>Pago Rechazado</h1>
+        
+        <p class="message">
+            Lamentamos informarte que tu pago no pudo ser procesado. 
+            Por favor, intenta nuevamente con otro método de pago.
+        </p>
+
+        <div class="details">
+            <h3>🔍 Posibles Causas</h3>
+            <ul>
+                <li>Fondos insuficientes en la tarjeta</li>
+                <li>Tarjeta vencida o bloqueada</li>
+                <li>Datos incorrectos de la tarjeta</li>
+                <li>Límite de transacciones excedido</li>
+                <li>Problemas de conexión temporal</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="checkout.html" class="btn btn-primary">
+                🔄 Intentar Nuevamente
+            </a>
+            <a href="index.html" class="btn btn-secondary">
+                🏠 Ir al Inicio
+            </a>
+        </div>
+
+        <div class="help-section">
+            <h3>¿Necesitas Ayuda?</h3>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>📧 Email</strong>
+                    soporte@foodpanda.com
+                </div>
+                <div class="contact-item">
+                    <strong>📱 Teléfono</strong>
+                    3764 123456
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('payment_id');
+        const preferenceId = urlParams.get('preference_id');
+        const errorCode = urlParams.get('error_code');
+
+        console.log('❌ Página de fallo cargada');
+        console.log('💳 Payment ID:', paymentId);
+        console.log('🆔 Preference ID:', preferenceId);
+        console.log('🚫 Error Code:', errorCode);
+
+        // Función para mostrar mensaje específico según el error
+        function getErrorMessage(errorCode) {
+            const errorMessages = {
+                '301': 'Tarjeta rechazada por el banco.',
+                '302': 'Error en la validación de la tarjeta.',
+                '303': 'Tarjeta inválida.',
+                '304': 'CVV inválido.',
+                '305': 'Fecha de vencimiento inválida.',
+                '403': 'Tarjeta no autorizada para compras online.',
+                '404': 'Tarjeta no encontrada en el sistema.',
+                '409': 'Fondos insuficientes.',
+                '410': 'Tarjeta reportada como perdida o robada.',
+                '411': 'Tarjeta vencida.',
+                '412': 'CVC inválido.',
+                '413': 'Tarjeta con restricciones.',
+                '414': 'Tarjeta no habilitada para compras en cuotas.',
+                '415': 'Tarjeta no habilitada para compras internacionales.',
+                '416': 'Tarjeta no habilitada para compras online.',
+                '417': 'Monto máximo excedido.',
+                '418': 'Número de intentos excedido.',
+                '419': 'Tarjeta con problemas de seguridad.',
+                '420': 'Tarjeta con problemas de conexión.',
+                '421': 'Tarjeta con problemas de autenticación.',
+                '422': 'Tarjeta con problemas de autorización.',
+                '423': 'Tarjeta con problemas de procesamiento.',
+                '424': 'Tarjeta con problemas de validación.',
+                '425': 'Tarjeta con problemas de verificación.',
+                '426': 'Tarjeta con problemas de confirmación.',
+                '427': 'Tarjeta con problemas de finalización.',
+                '428': 'Tarjeta con problemas de cancelación.',
+                '429': 'Tarjeta con problemas de reversión.',
+                '430': 'Tarjeta con problemas de reembolso.',
+                '431': 'Tarjeta con problemas de contracargo.',
+                '432': 'Tarjeta con problemas de disputa.',
+                '433': 'Tarjeta con problemas de fraude.',
+                '434': 'Tarjeta con problemas de seguridad.',
+                '435': 'Tarjeta con problemas de bloqueo.',
+                '436': 'Tarjeta con problemas de límite.',
+                '437': 'Tarjeta con problemas de saldo.',
+                '438': 'Tarjeta con problemas de cuenta.',
+                '439': 'Tarjeta con problemas de activación.',
+                '440': 'Tarjeta con problemas de registro.',
+                '441': 'Tarjeta con problemas de verificación.',
+                '442': 'Tarjeta con problemas de confirmación.',
+                '443': 'Tarjeta con problemas de validación.',
+                '444': 'Tarjeta con problemas de procesamiento.',
+                '445': 'Tarjeta con problemas de finalización.',
+                '446': 'Tarjeta con problemas de cancelación.',
+                '447': 'Tarjeta con problemas de reversión.',
+                '448': 'Tarjeta con problemas de reembolso.',
+                '449': 'Tarjeta con problemas de contracargo.',
+                '450': 'Tarjeta con problemas de disputa.',
+                '451': 'Tarjeta con problemas de fraude.',
+                '452': 'Tarjeta con problemas de seguridad.',
+                '453': 'Tarjeta con problemas de bloqueo.',
+                '454': 'Tarjeta con problemas de límite.',
+                '455': 'Tarjeta con problemas de saldo.',
+                '456': 'Tarjeta con problemas de cuenta.',
+                '457': 'Tarjeta con problemas de activación.',
+                '458': 'Tarjeta con problemas de registro.',
+                '459': 'Tarjeta con problemas de verificación.',
+                '460': 'Tarjeta con problemas de confirmación.',
+                '461': 'Tarjeta con problemas de validación.',
+                '462': 'Tarjeta con problemas de procesamiento.',
+                '463': 'Tarjeta con problemas de finalización.',
+                '464': 'Tarjeta con problemas de cancelación.',
+                '465': 'Tarjeta con problemas de reversión.',
+                '466': 'Tarjeta con problemas de reembolso.',
+                '467': 'Tarjeta con problemas de contracargo.',
+                '468': 'Tarjeta con problemas de disputa.',
+                '469': 'Tarjeta con problemas de fraude.',
+                '470': 'Tarjeta con problemas de seguridad.',
+                '471': 'Tarjeta con problemas de bloqueo.',
+                '472': 'Tarjeta con problemas de límite.',
+                '473': 'Tarjeta con problemas de saldo.',
+                '474': 'Tarjeta con problemas de cuenta.',
+                '475': 'Tarjeta con problemas de activación.',
+                '476': 'Tarjeta con problemas de registro.',
+                '477': 'Tarjeta con problemas de verificación.',
+                '478': 'Tarjeta con problemas de confirmación.',
+                '479': 'Tarjeta con problemas de validación.',
+                '480': 'Tarjeta con problemas de procesamiento.',
+                '481': 'Tarjeta con problemas de finalización.',
+                '482': 'Tarjeta con problemas de cancelación.',
+                '483': 'Tarjeta con problemas de reversión.',
+                '484': 'Tarjeta con problemas de reembolso.',
+                '485': 'Tarjeta con problemas de contracargo.',
+                '486': 'Tarjeta con problemas de disputa.',
+                '487': 'Tarjeta con problemas de fraude.',
+                '488': 'Tarjeta con problemas de seguridad.',
+                '489': 'Tarjeta con problemas de bloqueo.',
+                '490': 'Tarjeta con problemas de límite.',
+                '491': 'Tarjeta con problemas de saldo.',
+                '492': 'Tarjeta con problemas de cuenta.',
+                '493': 'Tarjeta con problemas de activación.',
+                '494': 'Tarjeta con problemas de registro.',
+                '495': 'Tarjeta con problemas de verificación.',
+                '496': 'Tarjeta con problemas de confirmación.',
+                '497': 'Tarjeta con problemas de validación.',
+                '498': 'Tarjeta con problemas de procesamiento.',
+                '499': 'Tarjeta con problemas de finalización.',
+                '500': 'Error interno del servidor.'
+            };
+
+            return errorMessages[errorCode] || 'Error desconocido. Por favor, intenta nuevamente.';
+        }
+
+        // Mostrar mensaje específico si hay código de error
+        if (errorCode) {
+            const message = document.querySelector('.message');
+            message.innerHTML += `
+                <br><br>
+                <strong>🔍 Detalle del error:</strong> ${getErrorMessage(errorCode)}
+            `;
+        }
+
+        // Función para registrar el intento fallido
+        async function logFailedPayment() {
+            try {
+                const failedPayment = {
+                    payment_id: paymentId,
+                    preference_id: preferenceId,
+                    error_code: errorCode,
+                    timestamp: new Date().toISOString(),
+                    user_agent: navigator.userAgent,
+                    ip_address: await getClientIP()
+                };
+
+                // Enviar al backend para análisis
+                await fetch('http://localhost:3002/log-failed-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(failedPayment)
+                });
+
+            } catch (error) {
+                console.error('Error al registrar pago fallido:', error);
+            }
+        }
+
+        // Función para obtener IP del cliente
+        async function getClientIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'unknown';
+            }
+        }
+
+        // Registrar el intento fallido
+        if (paymentId || errorCode) {
+            logFailedPayment();
+        }
+
+        // Animación de shake al icono de error
+        setTimeout(() => {
+            const errorIcon = document.querySelector('.error-icon');
+            errorIcon.style.animation = 'shake 0.5s ease-in-out';
+        }, 500);
+    </script>
+</body>
+</html>

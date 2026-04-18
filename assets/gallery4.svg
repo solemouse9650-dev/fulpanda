@@ -1,0 +1,8 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#000"/>
+  <rect x="30" y="30" width="340" height="240" fill="#333" rx="10"/>
+  <rect x="60" y="60" width="100" height="180" fill="#555" rx="5"/>
+  <rect x="240" y="60" width="100" height="180" fill="#555" rx="5"/>
+  <rect x="180" y="120" width="40" height="60" fill="#777"/>
+  <text x="200" y="250" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#fff">NUESTRO LOCAL</text>
+</svg>

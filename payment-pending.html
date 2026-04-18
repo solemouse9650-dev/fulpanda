@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Pendiente - Food Panda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .pending-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .details h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .details li {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .details li:before {
+            content: "⏳";
+            position: absolute;
+            left: 0;
+            color: #ffcc80;
+            font-size: 1.2em;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #fff, #ffcc80);
+            height: 100%;
+            width: 60%;
+            border-radius: 10px;
+            animation: progress 3s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0%, 100% {
+                width: 60%;
+            }
+            50% {
+                width: 80%;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #ff9800;
+        }
+
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .status-check {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .check-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .check-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="pending-icon">⏳</div>
+        <h1>Pago Pendiente</h1>
+        
+        <p class="message">
+            Tu pago está siendo procesado. Esto puede tardar unos minutos.
+            Te notificaremos cuando el pago sea aprobado.
+        </p>
+
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="details">
+            <h3>📋 ¿Qué está pasando?</h3>
+            <ul>
+                <li>Tu pago fue recibido por Mercado Pago</li>
+                <li>Está siendo verificado por el procesador</li>
+                <li>La aprobación puede tardar hasta 48 horas</li>
+                <li>Recibirás un email cuando se apruebe</li>
+            </ul>
+        </div>
+
+        <div class="status-check">
+            <h3>🔍 Verificar Estado</h3>
+            <p>Puedes verificar el estado de tu pago en cualquier momento:</p>
+            <button class="check-button" id="checkStatus">
+                🔄 Verificar Estado Ahora
+            </button>
+            <div id="statusResult" style="margin-top: 15px;"></div>
+        </div>
+
+        <div class="button-group">
+            <a href="checkout.html" class="btn btn-primary">
+                🛒 Nueva Compra
+            </a>
+            <a href="index.html" class="btn btn-secondary">
+                🏠 Ir al Inicio
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('payment_id');
+        const preferenceId = urlParams.get('preference_id');
+        const externalReference = urlParams.get('external_reference');
+
+        console.log('⏳ Página de pendiente cargada');
+        console.log('💳 Payment ID:', paymentId);
+        console.log('🆔 Preference ID:', preferenceId);
+        console.log('📝 External Reference:', externalReference);
+
+        // Función para verificar el estado del pago
+        async function checkPaymentStatus() {
+            const statusResult = document.getElementById('statusResult');
+            const checkButton = document.getElementById('checkStatus');
+
+            try {
+                checkButton.disabled = true;
+                checkButton.textContent = '⏳ Verificando...';
+
+                const response = await fetch(`http://localhost:3002/webhook/payments/${paymentId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const payment = data.payment;
+                    
+                    switch (payment.status) {
+                        case 'approved':
+                            statusResult.innerHTML = `
+                                <div style="color: #4CAF50; padding: 10px; border-radius: 5px; background: rgba(76, 175, 80, 0.1);">
+                                    ✅ ¡Pago aprobado! Serás redirigido...
+                                </div>
+                            `;
+                            setTimeout(() => {
+                                window.location.href = `payment-success.html?payment_id=${paymentId}&preference_id=${preferenceId}&external_reference=${externalReference}`;
+                            }, 3000);
+                            break;
+                        case 'rejected':
+                            statusResult.innerHTML = `
+                                <div style="color: #ff4444; padding: 10px; border-radius: 5px; background: rgba(255, 68, 68, 0.1);">
+                                    ❌ Pago rechazado. <a href="payment-failure.html?payment_id=${paymentId}" style="color: #fff;">Ver detalles</a>
+                                </div>
+                            `;
+                            break;
+                        case 'cancelled':
+                            statusResult.innerHTML = `
+                                <div style="color: #ff9800; padding: 10px; border-radius: 5px; background: rgba(255, 152, 0, 0.1);">
+                                    🚫 Pago cancelado.
+                                </div>
+                            `;
+                            break;
+                        default:
+                            statusResult.innerHTML = `
+                                <div style="color: #ffcc80; padding: 10px; border-radius: 5px; background: rgba(255, 204, 128, 0.1);">
+                                    ⏳ El pago sigue en proceso: <strong>${payment.status}</strong>
+                                </div>
+                            `;
+                    }
+                } else {
+                    throw new Error('No se pudo obtener el estado del pago');
+                }
+
+            } catch (error) {
+                console.error('Error al verificar estado:', error);
+                statusResult.innerHTML = `
+                    <div style="color: #ff4444; padding: 10px; border-radius: 5px; background: rgba(255, 68, 68, 0.1);">
+                        ❌ Error al verificar el estado. Intenta nuevamente.
+                    </div>
+                `;
+            } finally {
+                checkButton.disabled = false;
+                checkButton.textContent = '🔄 Verificar Estado Ahora';
+            }
+        }
+
+        // Event listener para el botón de verificación
+        document.getElementById('checkStatus').addEventListener('click', checkPaymentStatus);
+
+        // Auto-verificar cada 30 segundos
+        if (paymentId) {
+            setInterval(checkPaymentStatus, 30000);
+        }
+
+        // Función para mostrar tiempo estimado
+        function updateEstimatedTime() {
+            const message = document.querySelector('.message');
+            const elapsed = Date.now() - (urlParams.get('timestamp') ? parseInt(urlParams.get('timestamp')) : Date.now());
+            const minutes = Math.floor(elapsed / 60000);
+            
+            if (minutes > 0) {
+                message.innerHTML += `
+                    <br><br>
+                    <small>⏰ Tiempo transcurrido: ${minutes} minuto${minutes !== 1 ? 's' : ''}</small>
+                `;
+            }
+        }
+
+        // Actualizar tiempo cada minuto
+        setInterval(updateEstimatedTime, 60000);
+        updateEstimatedTime();
+
+        // Animación de progreso continua
+        const progressFill = document.querySelector('.progress-fill');
+        let progress = 60;
+        
+        setInterval(() => {
+            progress = (progress + 1) % 100;
+            progressFill.style.width = progress + '%';
+        }, 50);
+    </script>
+</body>
+</html>

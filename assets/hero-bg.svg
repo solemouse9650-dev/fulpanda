@@ -1,0 +1,13 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="foodPattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <circle cx="50" cy="50" r="30" fill="#333" opacity="0.3"/>
+      <circle cx="150" cy="150" r="40" fill="#666" opacity="0.3"/>
+      <rect x="100" y="50" width="60" height="60" fill="#999" opacity="0.3"/>
+      <polygon points="25,150 75,150 50,100" fill="#555" opacity="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="#000"/>
+  <rect width="1920" height="1080" fill="url(#foodPattern)"/>
+  <text x="960" y="540" font-family="Arial, sans-serif" font-size="120" font-weight="bold" text-anchor="middle" fill="#fff" opacity="0.1">FOOD PANDA</text>
+</svg>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Food Panda - Comida deliciosa con entrega rápida. Reservas, pedidos online y más.">
+    <meta name="keywords" content="comida, restaurante, delivery, reservas, food panda">
+    <meta name="author" content="Food Panda">
+    <title>Food Panda - Comida Deliciosa</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Food Panda - Comida Deliciosa">
+    <meta property="og:description" content="Comida deliciosa con entrega rápida. Reservas, pedidos online y más.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="img/favicon.png" alt="Food Panda Logo">
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                    <li><a href="#sobre-nosotros" class="nav-link">Sobre Nosotros</a></li>
+                    <li><a href="#galeria" class="nav-link">Galería</a></li>
+                    <li><a href="#menu" class="nav-link">Menú</a></li>
+                    <li><a href="#ubicacion" class="nav-link">Ubicación</a></li>
+                    <li><a href="#reservas" class="nav-link">Reservas</a></li>
+                    <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shopping Cart -->
+    <div class="cart-container" id="cartContainer">
+        <div class="cart-icon" id="cartIcon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+        <div class="cart-dropdown" id="cartDropdown">
+            <div class="cart-header">
+                <h3>Carrito de Compras</h3>
+                <button class="cart-close" id="cartClose">×</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total: $<span id="cartTotal">0</span></strong>
+                </div>
+                <button class="cart-checkout" id="cartCheckout">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Introduction Section -->
+        <section id="inicio" class="hero-section">
+            <div class="hero-content">
+                <h1>Food Panda</h1>
+                <p>Comida deliciosa con la mejor calidad y servicio</p>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn btn-primary">Ver Menú</a>
+                    <a href="#reservas" class="btn btn-secondary">Reservar Mesa</a>
+                </div>
+            </div>
+            <div class="hero-background">
+                <img src="assets/hero-bg.svg" alt="Food Panda Background">
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="sobre-nosotros" class="about-section">
+            <div class="container">
+                <h2>Sobre Food Panda</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>En Food Panda, nos apasiona ofrecer comida excepcional con ingredientes frescos y de alta calidad. Nuestro equipo de chefs dedicados crea platos deliciosos que satisfacen todos los paladares.</p>
+                        <p>Con años de experiencia en la industria gastronómica, nos hemos convertido en el destino preferido para quienes buscan una experiencia culinaria memorable.</p>
+                        <div class="about-features">
+                            <div class="feature">
+                                <i class="fas fa-utensils"></i>
+                                <h3>Comida de Calidad</h3>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-clock"></i>
+                                <h3>Servicio Rápido</h3>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-heart"></i>
+                                <h3>Hecho con Amor</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/about-image.svg" alt="Sobre Food Panda">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="galeria" class="gallery-section">
+            <div class="container">
+                <h2>Galería</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="assets/gallery1.svg" alt="Comida 1">
+                        <div class="gallery-overlay">
+                            <h3>Especialidades</h3>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/gallery2.svg" alt="Comida 2">
+                        <div class="gallery-overlay">
+                            <h3>Platos Principales</h3>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/gallery3.svg" alt="Comida 3">
+                        <div class="gallery-overlay">
+                            <h3>Postres</h3>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/gallery4.svg" alt="Local 1">
+                        <div class="gallery-overlay">
+                            <h3>Nuestro Local</h3>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/gallery5.svg" alt="Local 2">
+                        <div class="gallery-overlay">
+                            <h3>Ambiente Acogedor</h3>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/gallery6.svg" alt="Bebidas">
+                        <div class="gallery-overlay">
+                            <h3>Bebidas Refrescantes</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="menu-section">
+            <div class="container">
+                <h2>Nuestro Menú</h2>
+                <div class="menu-categories">
+                    <button class="category-btn active" data-category="entradas">Entradas</button>
+                    <button class="category-btn" data-category="platos">Platos Principales</button>
+                    <button class="category-btn" data-category="bebidas">Bebidas</button>
+                    <button class="category-btn" data-category="postres">Postres</button>
+                </div>
+                
+                <div class="menu-content">
+                    <!-- Entradas -->
+                    <div class="menu-category active" id="entradas">
+                        <div class="menu-items">
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Empanadas de Carne</h3>
+                                    <p>Deliciosas empanadas rellenas de carne sazonada</p>
+                                    <span class="price">$2.600</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Empanadas de Carne" data-price="2600">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Empanadas de Carne" data-price="2600">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Papas Fritas</h3>
+                                    <p>Crujientes papas fritas con salsa especial</p>
+                                    <span class="price">$3.200</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Papas Fritas" data-price="3200">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Papas Fritas" data-price="3200">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Ensalada César</h3>
+                                    <p>Fresca ensalada con pollo y aderezo césar</p>
+                                    <span class="price">$4.500</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Ensalada César" data-price="4500">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Ensalada César" data-price="4500">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platos Principales -->
+                    <div class="menu-category" id="platos">
+                        <div class="menu-items">
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Hamburguesa Clásica</h3>
+                                    <p>Jugosa hamburguesa con carne 100% vacuna</p>
+                                    <span class="price">$8.900</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Hamburguesa Clásica" data-price="8900">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Hamburguesa Clásica" data-price="8900">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Pizza Margarita</h3>
+                                    <p>Clásica pizza con mozzarella, tomate y albahaca</p>
+                                    <span class="price">$12.500</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Pizza Margarita" data-price="12500">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Pizza Margarita" data-price="12500">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Parrillada Mixta</h3>
+                                    <p>Variedad de carnes a la parrilla con acompañamientos</p>
+                                    <span class="price">$18.500</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Parrillada Mixta" data-price="18500">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Parrillada Mixta" data-price="18500">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bebidas -->
+                    <div class="menu-category" id="bebidas">
+                        <div class="menu-items">
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Coca-Cola</h3>
+                                    <p>Refrescante bebida cola</p>
+                                    <span class="price">$2.200</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Coca-Cola" data-price="2200">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Coca-Cola" data-price="2200">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Jugo Natural</h3>
+                                    <p>Jugo de frutas natural y fresco</p>
+                                    <span class="price">$3.500</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Jugo Natural" data-price="3500">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Jugo Natural" data-price="3500">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Cerveza Artesanal</h3>
+                                    <p>Cerveza local de producción artesanal</p>
+                                    <span class="price">$4.800</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Cerveza Artesanal" data-price="4800">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Cerveza Artesanal" data-price="4800">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Postres -->
+                    <div class="menu-category" id="postres">
+                        <div class="menu-items">
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Tiramisú</h3>
+                                    <p>Clásico postre italiano con café y mascarpone</p>
+                                    <span class="price">$4.200</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Tiramisú" data-price="4200">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Tiramisú" data-price="4200">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Helado Artesanal</h3>
+                                    <p>Helado cremoso de varios sabores</p>
+                                    <span class="price">$3.800</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Helado Artesanal" data-price="3800">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Helado Artesanal" data-price="3800">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Brownie con Helado</h3>
+                                    <p>Cálido brownie con helado de vainilla</p>
+                                    <span class="price">$5.200</span>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-buy" data-item="Brownie con Helado" data-price="5200">Comprar</button>
+                                    <button class="btn-add-cart" data-item="Brownie con Helado" data-price="5200">Agregar al Carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section id="ubicacion" class="location-section">
+            <div class="container">
+                <h2>Ubicación y Horarios</h2>
+                <div class="location-content">
+                    <div class="location-info">
+                        <div class="horarios">
+                            <h3>Horarios de Atención</h3>
+                            <div class="status-indicator">
+                                <span class="status-dot" id="statusDot"></span>
+                                <span class="status-text" id="statusText">Cerrado</span>
+                            </div>
+                            <table class="horarios-table">
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Horario</th>
+                                </tr>
+                                <tr>
+                                    <td>Lunes</td>
+                                    <td>10:00 - 23:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Martes</td>
+                                    <td>10:00 - 23:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Miércoles</td>
+                                    <td>10:00 - 23:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Jueves</td>
+                                    <td>10:00 - 23:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Viernes</td>
+                                    <td>10:00 - 00:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Sábado</td>
+                                    <td>10:00 - 00:00</td>
+                                </tr>
+                                <tr>
+                                    <td>Domingo</td>
+                                    <td>10:00 - 22:00</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="direccion">
+                            <h3>Dirección</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Calle Principal #123, Ciudad</p>
+                            <p><i class="fas fa-phone"></i> +54 3758 502801</p>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <div id="map">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.123456789!2d-58.123456789!3d-34.123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDA3JzIwLjAiTiA1OMKwMDcnMjAuMCJF!5e0!3m2!1ses!2sar!4v1234567890" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reservation Section -->
+        <section id="reservas" class="reservation-section">
+            <div class="container">
+                <h2>Reservas</h2>
+                <div class="reservation-form">
+                    <form id="reservationForm">
+                        <div class="form-group">
+                            <label for="reservationName">Nombre</label>
+                            <input type="text" id="reservationName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservationDate">Fecha</label>
+                            <input type="date" id="reservationDate" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservationTime">Hora</label>
+                            <input type="time" id="reservationTime" name="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservationPeople">Cantidad de Personas</label>
+                            <select id="reservationPeople" name="people" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="1">1 persona</option>
+                                <option value="2">2 personas</option>
+                                <option value="3">3 personas</option>
+                                <option value="4">4 personas</option>
+                                <option value="5">5 personas</option>
+                                <option value="6">6 personas</option>
+                                <option value="7">7 personas</option>
+                                <option value="8">8 personas</option>
+                                <option value="9">9 personas</option>
+                                <option value="10">10+ personas</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="contact-section">
+            <div class="container">
+                <h2>Contacto y Redes Sociales</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Contáctanos</h3>
+                        <p><i class="fas fa-phone"></i> +54 3758 502801</p>
+                        <p><i class="fas fa-envelope"></i> info@foodpanda.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Calle Principal #123, Ciudad</p>
+                    </div>
+                    <div class="social-media">
+                        <h3>Síguenos</h3>
+                        <div class="social-buttons">
+                            <a href="https://wa.me/543758502801" target="_blank" class="social-btn whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                            <a href="https://instagram.com/foodpanda" target="_blank" class="social-btn instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Food Panda</h3>
+                    <p>Comida deliciosa con la mejor calidad</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#menu">Menú</a></li>
+                        <li><a href="#reservas">Reservas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#politica-privacidad">Política de Privacidad</a></li>
+                        <li><a href="#terminos-condiciones">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Food Panda. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <div class="floating-buttons">
+        <a href="https://wa.me/543758502801?text=Quiero%20hacer%20una%20reserva" target="_blank" class="floating-btn whatsapp-reserve">
+            <i class="fab fa-whatsapp"></i>
+            <span>Reservar</span>
+        </a>
+        <a href="https://maps.google.com/?q=Calle+Principal+123,Ciudad" target="_blank" class="floating-btn directions">
+            <i class="fas fa-directions"></i>
+            <span>Cómo Llegar</span>
+        </a>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Comprar Producto</h3>
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="product-info">
+                    <h4 id="modalProductName">Producto</h4>
+                    <p class="product-price">$<span id="modalProductPrice">0</span> c/u</p>
+                </div>
+                <div class="quantity-selector">
+                    <label for="quantity">Cantidad:</label>
+                    <div class="quantity-controls">
+                        <button type="button" id="quantityDecrease">-</button>
+                        <input type="number" id="quantity" value="1" min="1" max="99">
+                        <button type="button" id="quantityIncrease">+</button>
+                    </div>
+                </div>
+                <div class="total-price">
+                    <strong>Total: $<span id="modalTotal">0</span></strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
+                <button class="btn btn-primary" id="modalConfirm">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Panda - Checkout con Mercado Pago</title>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+
+        .product-section {
+            background: #333;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #222;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00a8e8;
+            box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .price-display {
+            background: #00a8e8;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .buy-button {
+            background: linear-gradient(135deg, #00a8e8 0%, #0078a0 100%);
+            color: #fff;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 232, 0.3);
+        }
+
+        .buy-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00a8e8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #ff4444;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        .success {
+            background: #4CAF50;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .success.active {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #222;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .product-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🐼 Food Panda</h1>
+            <p>Checkout Seguro con Mercado Pago</p>
+        </header>
+
+        <main>
+            <section class="product-section">
+                <form id="productForm" class="product-form">
+                    <div class="form-group">
+                        <label for="title">Nombre del Producto</label>
+                        <input type="text" id="title" name="title" value="Empanadas de Carne (6 unidades)" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Precio (ARS)</label>
+                            <input type="number" id="price" name="price" value="2600" step="0.01" min="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Cantidad</label>
+                            <input type="number" id="quantity" name="quantity" value="1" min="1" max="1000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" name="description" rows="3" placeholder="Descripción opcional del producto...">Deliciosas empanadas de carne criolla, hechas al horno tradicional con masa casera.</textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer_name">Tu Nombre</label>
+                            <input type="text" id="customer_name" name="customer_name" placeholder="Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer_email">Tu Email</label>
+                            <input type="email" id="customer_email" name="customer_email" placeholder="juan@ejemplo.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer_phone">Tu Teléfono</label>
+                        <input type="tel" id="customer_phone" name="customer_phone" placeholder="3764 123456" required>
+                    </div>
+
+                    <div class="price-display" id="priceDisplay">
+                        Total: $2,600.00 ARS
+                    </div>
+
+                    <div class="error" id="errorMessage"></div>
+                    <div class="success" id="successMessage"></div>
+
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Procesando tu pedido...</p>
+                    </div>
+
+                    <button type="submit" class="buy-button" id="buyButton">
+                        🛒 Comprar con Mercado Pago
+                    </button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Food Panda - Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        // Configuración de Mercado Pago
+        const MP_PUBLIC_KEY = 'TEST-9a6b8c7d-1e2f-3a4b-5c6d-7e8f9a0b1c2d'; // Reemplazar con tu PUBLIC_KEY real
+        const BACKEND_URL = 'http://localhost:3002';
+
+        // Inicializar Mercado Pago
+        const mp = new MercadoPago(MP_PUBLIC_KEY, {
+            locale: 'es-AR'
+        });
+
+        // Elementos del DOM
+        const form = document.getElementById('productForm');
+        const priceInput = document.getElementById('price');
+        const quantityInput = document.getElementById('quantity');
+        const priceDisplay = document.getElementById('priceDisplay');
+        const buyButton = document.getElementById('buyButton');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        // Actualizar precio total
+        function updatePriceDisplay() {
+            const price = parseFloat(priceInput.value) || 0;
+            const quantity = parseInt(quantityInput.value) || 0;
+            const total = price * quantity;
+            
+            priceDisplay.textContent = `Total: $${total.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })} ARS`;
+        }
+
+        // Mostrar error
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('active');
+            successMessage.classList.remove('active');
+            loading.classList.remove('active');
+            buyButton.disabled = false;
+        }
+
+        // Mostrar éxito
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.add('active');
+            errorMessage.classList.remove('active');
+            loading.classList.remove('active');
+            buyButton.disabled = false;
+        }
+
+        // Mostrar loading
+        function showLoading() {
+            loading.classList.add('active');
+            errorMessage.classList.remove('active');
+            successMessage.classList.remove('active');
+            buyButton.disabled = true;
+        }
+
+        // Crear preferencia de pago
+        async function createPreference(formData) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/create_preference`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Error al crear preferencia');
+                }
+
+                return data;
+
+            } catch (error) {
+                console.error('Error en createPreference:', error);
+                throw error;
+            }
+        }
+
+        // Redirigir a Mercado Pago
+        function redirectToMercadoPago(initPoint) {
+            console.log('🔗 Redirigiendo a Mercado Pago:', initPoint);
+            window.location.href = initPoint;
+        }
+
+        // Manejar envío del formulario
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            showLoading();
+
+            // Recopilar datos del formulario
+            const formData = {
+                title: document.getElementById('title').value,
+                price: parseFloat(document.getElementById('price').value),
+                quantity: parseInt(document.getElementById('quantity').value),
+                description: document.getElementById('description').value,
+                customer_name: document.getElementById('customer_name').value,
+                customer_email: document.getElementById('customer_email').value,
+                customer_phone: document.getElementById('customer_phone').value,
+                currency_id: 'ARS',
+                category_id: 'food'
+            };
+
+            console.log('📦 Enviando datos:', formData);
+
+            try {
+                // Crear preferencia
+                const preference = await createPreference(formData);
+                
+                console.log('✅ Preferencia creada:', preference);
+
+                // Redirigir a Mercado Pago
+                if (preference.success && preference.init_point) {
+                    showSuccess('Redirigiendo a Mercado Pago...');
+                    setTimeout(() => {
+                        redirectToMercadoPago(preference.init_point);
+                    }, 2000);
+                } else {
+                    throw new Error('No se pudo crear la preferencia de pago');
+                }
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showError(`Error al procesar el pago: ${error.message}`);
+            }
+        });
+
+        // Event listeners para actualizar precio
+        priceInput.addEventListener('input', updatePriceDisplay);
+        quantityInput.addEventListener('input', updatePriceDisplay);
+
+        // Inicializar
+        updatePriceDisplay();
+
+        // Verificar si venimos de una redirección de Mercado Pago
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentStatus = urlParams.get('payment_status');
+        const preferenceId = urlParams.get('preference_id');
+
+        if (paymentStatus && preferenceId) {
+            console.log('🔄 Retorno de Mercado Pago detectado');
+            console.log('📊 Estado:', paymentStatus);
+            console.log('🆔 Preferencia:', preferenceId);
+
+            switch (paymentStatus) {
+                case 'approved':
+                    showSuccess('✅ ¡Pago aprobado! Tu pedido está siendo procesado.');
+                    break;
+                case 'pending':
+                    showSuccess('⏳ Pago pendiente. Te notificaremos cuando se apruebe.');
+                    break;
+                case 'failure':
+                    showError('❌ Pago rechazado. Por favor, intenta con otro método.');
+                    break;
+                default:
+                    console.log('Estado no manejado:', paymentStatus);
+            }
+        }
+
+        // Log de inicialización
+        console.log('🚀 Checkout de Food Panda inicializado');
+        console.log('🔑 Public Key:', MP_PUBLIC_KEY.substring(0, 10) + '...');
+        console.log('🌐 Backend URL:', BACKEND_URL);
+    </script>
+</body>
+</html>

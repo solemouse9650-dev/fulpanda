@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Exitoso - Food Panda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .details h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .details p {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #4CAF50;
+        }
+
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✅</div>
+        <h1>¡Pago Exitoso!</h1>
+        
+        <p class="message">
+            Tu pago ha sido procesado correctamente. Gracias por tu compra en Food Panda.
+        </p>
+
+        <div class="details" id="paymentDetails">
+            <h3>📋 Detalles del Pedido</h3>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Cargando detalles del pago...</p>
+            </div>
+            <div id="detailsContent"></div>
+        </div>
+
+        <div class="button-group">
+            <a href="checkout.html" class="btn btn-primary">
+                🛒 Nueva Compra
+            </a>
+            <a href="index.html" class="btn btn-secondary">
+                🏠 Ir al Inicio
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('payment_id');
+        const preferenceId = urlParams.get('preference_id');
+        const externalReference = urlParams.get('external_reference');
+
+        console.log('🎉 Página de éxito cargada');
+        console.log('💳 Payment ID:', paymentId);
+        console.log('🆔 Preference ID:', preferenceId);
+        console.log('📝 External Reference:', externalReference);
+
+        // Función para obtener detalles del pago
+        async function getPaymentDetails() {
+            try {
+                const response = await fetch(`http://localhost:3002/webhook/payments/${paymentId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayPaymentDetails(data.payment);
+                } else {
+                    throw new Error('No se pudieron obtener los detalles del pago');
+                }
+
+            } catch (error) {
+                console.error('Error al obtener detalles:', error);
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('detailsContent').innerHTML = `
+                    <p>No se pudieron cargar los detalles del pago.</p>
+                    <p>Por favor, contacta con soporte si tienes dudas.</p>
+                `;
+            }
+        }
+
+        // Función para mostrar detalles del pago
+        function displayPaymentDetails(payment) {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('detailsContent');
+
+            loading.classList.remove('active');
+
+            const formattedAmount = new Intl.NumberFormat('es-AR', {
+                style: 'currency',
+                currency: payment.currency_id || 'ARS'
+            }).format(payment.transaction_amount);
+
+            const paymentDate = payment.date_approved ? 
+                new Date(payment.date_approved).toLocaleString('es-AR') : 
+                'Pendiente';
+
+            content.innerHTML = `
+                <p><strong>ID del Pago:</strong> ${payment.id}</p>
+                <p><strong>Estado:</strong> <span style="color: #4CAF50;">${payment.status}</span></p>
+                <p><strong>Monto:</strong> ${formattedAmount}</p>
+                <p><strong>Fecha de Aprobación:</strong> ${paymentDate}</p>
+                <p><strong>Referencia:</strong> ${payment.external_reference || 'N/A'}</p>
+                ${payment.payer?.email ? `<p><strong>Email del Cliente:</strong> ${payment.payer.email}</p>` : ''}
+                ${payment.description ? `<p><strong>Descripción:</strong> ${payment.description}</p>` : ''}
+            `;
+        }
+
+        // Mostrar mensaje de bienvenida
+        function showWelcomeMessage() {
+            const message = document.querySelector('.message');
+            message.innerHTML += `
+                <br><br>
+                <strong>📧 Recibirás una confirmación por email pronto.</strong><br>
+                <strong>📦 Tu pedido está siendo preparado con mucho cuidado.</strong>
+            `;
+        }
+
+        // Cargar detalles si hay un payment_id
+        if (paymentId) {
+            getPaymentDetails();
+            setTimeout(showWelcomeMessage, 2000);
+        } else {
+            // Si no hay payment_id, mostrar mensaje genérico
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('detailsContent').innerHTML = `
+                <p>¡Gracias por tu compra!</p>
+                <p>Tu pedido ha sido recibido y está siendo procesado.</p>
+                <p>Te enviaremos un email con la confirmación y los detalles.</p>
+            `;
+        }
+
+        // Animación de confeti (opcional)
+        function createConfetti() {
+            const colors = ['#4CAF50', '#45a049', '#fff', '#8BC34A', '#CDDC39'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: 10px;
+                        height: 10px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        left: ${Math.random() * 100}%;
+                        top: -10px;
+                        opacity: 1;
+                        transform: rotate(${Math.random() * 360}deg);
+                        transition: all 2s ease-out;
+                        pointer-events: none;
+                        z-index: 9999;
+                    `;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.style.top = '100%';
+                        confetti.style.opacity = '0';
+                        confetti.style.transform = `rotate(${Math.random() * 720}deg)`;
+                    }, 100);
+
+                    setTimeout(() => {
+                        document.body.removeChild(confetti);
+                    }, 2100);
+                }, i * 30);
+            }
+        }
+
+        // Crear confeti después de un momento
+        setTimeout(createConfetti, 500);
+    </script>
+</body>
+</html>
