@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Panda - Checkout Completo con Mercado Pago</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #00a8e8;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-section, .checkout-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 168, 232, 0.3);
+        }
+
+        .product-card h3 {
+            color: #00a8e8;
+            margin-bottom: 10px;
+        }
+
+        .product-card .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .product-card .description {
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00a8e8 0%, #0078a0 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 232, 0.3);
+        }
+
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00a8e8;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 168, 232, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #00a8e8;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #00a8e8;
+            box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+        }
+
+        .cart-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item .item-info {
+            flex: 1;
+        }
+
+        .cart-item .item-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00a8e8;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #555;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: #00a8e8;
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            border-color: #00a8e8;
+            background: rgba(0, 168, 232, 0.1);
+        }
+
+        .payment-method .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00a8e8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(255, 68, 68, 0.2);
+            border: 2px solid #ff4444;
+            color: #ff6666;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .error.active {
+            display: block;
+        }
+
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            color: #66bb6a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .success.active {
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .success-page {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .success-page h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .error-page {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            color: #ff4444;
+            margin-bottom: 20px;
+        }
+
+        .error-page h1 {
+            color: #ff4444;
+            margin-bottom: 20px;
+        }
+
+        .pending-page {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .pending-icon {
+            font-size: 4rem;
+            color: #ff9800;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .pending-page h1 {
+            color: #ff9800;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #ff9800, #ffc107);
+            height: 100%;
+            width: 60%;
+            border-radius: 10px;
+            animation: progress 3s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0%, 100% {
+                width: 60%;
+            }
+            50% {
+                width: 80%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Food Panda</h1>
+            <p>Checkout completo con Mercado Pago</p>
+        </header>
+
+        <!-- Página Principal -->
+        <div id="mainPage" class="page active">
+            <div class="main-content">
+                <div class="product-section">
+                    <h2>Nuestros Productos</h2>
+                    <div class="product-card">
+                        <h3>Empanadas de Carne</h3>
+                        <div class="price">$2.600</div>
+                        <div class="description">Deliciosas empanadas de carne criolla, hechas al horno tradicional con masa casera.</div>
+                        <button class="btn" onclick="addToCart('empanadas-carne', 'Empanadas de Carne', 2600, 'Deliciosas empanadas de carne criolla')">
+                            Agregar al Carrito
+                        </button>
+                    </div>
+                    <div class="product-card">
+                        <h3>Pizza Familiar</h3>
+                        <div class="price">$4.800</div>
+                        <div class="description">Pizza grande con ingredientes frescos, queso mozzarella y salsa tomate casera.</div>
+                        <button class="btn" onclick="addToCart('pizza-familiar', 'Pizza Familiar', 4800, 'Pizza grande con ingredientes frescos')">
+                            Agregar al Carrito
+                        </button>
+                    </div>
+                    <div class="product-card">
+                        <h3>Hamburguesa Completa</h3>
+                        <div class="price">$3.200</div>
+                        <div class="description">Hamburguesa con carne 100% vacuna, lechuga, tomate, queso y papas fritas.</div>
+                        <button class="btn" onclick="addToCart('hamburguesa-completa', 'Hamburguesa Completa', 3200, 'Hamburguesa con carne 100% vacuna')">
+                            Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <div class="checkout-section">
+                    <h2>Carrito de Compras</h2>
+                    <div id="cartSection">
+                        <div class="cart-empty">
+                            <p>Tu carrito está vacío. Agrega productos para continuar.</p>
+                        </div>
+                    </div>
+                    <div id="cartTotal" style="display: none;">
+                        <div class="cart-total">
+                            Total: $<span id="totalAmount">0</span>
+                        </div>
+                        <button class="btn" onclick="showCheckoutForm()" style="width: 100%; margin-top: 20px;">
+                            Proceder al Pago
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Checkout -->
+        <div id="checkoutPage" class="page">
+            <div class="checkout-section">
+                <h2>Información de Envío y Pago</h2>
+                <form id="checkoutForm">
+                    <div class="form-group">
+                        <label for="customerName">Nombre Completo</label>
+                        <input type="text" id="customerName" name="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email</label>
+                        <input type="email" id="customerEmail" name="customerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Teléfono</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Dirección de Entrega</label>
+                        <input type="text" id="customerAddress" name="customerAddress" required>
+                    </div>
+                    
+                    <h3>Método de Pago</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('mercadopago')">
+                            <div class="icon">credit_card</div>
+                            <div>Mercado Pago</div>
+                            <small>Pago online con tarjeta</small>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('efectivo')">
+                            <div class="icon">payments</div>
+                            <div>Efectivo</div>
+                            <small>Pago al recibir</small>
+                        </div>
+                    </div>
+
+                    <div class="cart-summary">
+                        <h3>Resumen del Pedido</h3>
+                        <div id="checkoutCartItems"></div>
+                        <div class="cart-total">
+                            Total: $<span id="checkoutTotal">0</span>
+                        </div>
+                    </div>
+
+                    <div class="error" id="checkoutError"></div>
+                    <div class="success" id="checkoutSuccess"></div>
+                    <div class="loading" id="checkoutLoading">
+                        <div class="spinner"></div>
+                        <p>Procesando tu pedido...</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="backToMain()">
+                            Volver
+                        </button>
+                        <button type="submit" class="btn" id="payButton" disabled>
+                            Completar Pedido
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Página de Éxito -->
+        <div id="successPage" class="page">
+            <div class="success-page">
+                <div class="success-icon">check_circle</div>
+                <h1>¡Pedido Realizado con Éxito!</h1>
+                <p>Tu pedido ha sido procesado correctamente.</p>
+                <div id="orderDetails"></div>
+                <button class="btn" onclick="backToMain()">
+                    Hacer otro Pedido
+                </button>
+            </div>
+        </div>
+
+        <!-- Página de Error -->
+        <div id="errorPage" class="page">
+            <div class="error-page">
+                <div class="error-icon">error</div>
+                <h1>Error en el Proceso</h1>
+                <p id="errorMessage">Ha ocurrido un error al procesar tu pedido.</p>
+                <button class="btn" onclick="backToMain()">
+                    Volver a Intentar
+                </button>
+            </div>
+        </div>
+
+        <!-- Página de Pendiente -->
+        <div id="pendingPage" class="page">
+            <div class="pending-page">
+                <div class="pending-icon">hourglass_empty</div>
+                <h1>Pago Pendiente</h1>
+                <p>Tu pago está siendo procesado.</p>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div id="pendingDetails"></div>
+                <button class="btn" onclick="checkPaymentStatus()">
+                    Verificar Estado
+                </button>
+                <button class="btn btn-secondary" onclick="backToMain()">
+                    Volver
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Estado de la aplicación
+        let cart = [];
+        let selectedPaymentMethod = null;
+        let currentOrder = null;
+
+        // Simulación del backend
+        class BackendSimulator {
+            constructor() {
+                this.orders = [];
+                this.payments = [];
+            }
+
+            async createPreference(orderData) {
+                // Simular creación de preferencia
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const preference = {
+                            success: true,
+                            preference_id: 'pref_' + Date.now(),
+                            init_point: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=' + Date.now(),
+                            external_reference: 'order_' + Date.now(),
+                            payment_url: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=' + Date.now()
+                        };
+                        resolve(preference);
+                    }, 1000);
+                });
+            }
+
+            async processPayment(orderData, paymentMethod) {
+                // Simular procesamiento de pago
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        const payment = {
+                            id: 'pay_' + Date.now(),
+                            order_id: orderData.id,
+                            amount: orderData.total,
+                            method: paymentMethod,
+                            status: paymentMethod === 'efectivo' ? 'approved' : 'pending',
+                            created_at: new Date().toISOString()
+                        };
+
+                        this.payments.push(payment);
+                        
+                        if (payment.status === 'approved') {
+                            resolve(payment);
+                        } else {
+                            // Simular que después de un tiempo se aprueba
+                            setTimeout(() => {
+                                payment.status = 'approved';
+                                resolve(payment);
+                            }, 3000);
+                        }
+                    }, 1500);
+                });
+            }
+
+            async getPaymentStatus(paymentId) {
+                // Simular verificación de estado
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const payment = this.payments.find(p => p.id === paymentId);
+                        resolve(payment || null);
+                    }, 500);
+                });
+            }
+
+            async saveOrder(orderData) {
+                // Simular guardado de orden
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const order = {
+                            id: 'order_' + Date.now(),
+                            ...orderData,
+                            created_at: new Date().toISOString()
+                        };
+                        this.orders.push(order);
+                        resolve(order);
+                    }, 500);
+                });
+            }
+        }
+
+        const backend = new BackendSimulator();
+
+        // Funciones del carrito
+        function addToCart(id, name, price, description) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    description: description,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            showNotification('Producto agregado al carrito', 'success');
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartSection = document.getElementById('cartSection');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalAmount = document.getElementById('totalAmount');
+            
+            if (cart.length === 0) {
+                cartSection.innerHTML = '<div class="cart-empty"><p>Tu carrito está vacío. Agrega productos para continuar.</p></div>';
+                cartTotal.style.display = 'none';
+            } else {
+                let cartHTML = '';
+                let total = 0;
+                
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal;
+                    
+                    cartHTML += `
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <strong>${item.name}</strong>
+                                <small>Cantidad: ${item.quantity}</small>
+                            </div>
+                            <div class="item-price">$${subtotal.toLocaleString('es-AR')}</div>
+                        </div>
+                    `;
+                });
+                
+                cartSection.innerHTML = cartHTML;
+                totalAmount.textContent = total.toLocaleString('es-AR');
+                cartTotal.style.display = 'block';
+            }
+        }
+
+        function showCheckoutForm() {
+            if (cart.length === 0) {
+                showNotification('El carrito está vacío', 'error');
+                return;
+            }
+            
+            updateCheckoutCart();
+            showPage('checkoutPage');
+        }
+
+        function updateCheckoutCart() {
+            const checkoutCartItems = document.getElementById('checkoutCartItems');
+            const checkoutTotal = document.getElementById('checkoutTotal');
+            
+            let cartHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <strong>${item.name}</strong>
+                            <small>Cantidad: ${item.quantity}</small>
+                        </div>
+                        <div class="item-price">$${subtotal.toLocaleString('es-AR')}</div>
+                    </div>
+                `;
+            });
+            
+            checkoutCartItems.innerHTML = cartHTML;
+            checkoutTotal.textContent = total.toLocaleString('es-AR');
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Actualizar UI
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            event.target.closest('.payment-method').classList.add('selected');
+            
+            // Habilitar botón de pago
+            document.getElementById('payButton').disabled = false;
+        }
+
+        // Manejo del formulario de checkout
+        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!selectedPaymentMethod) {
+                showNotification('Selecciona un método de pago', 'error');
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const customerData = {
+                name: formData.get('customerName'),
+                email: formData.get('customerEmail'),
+                phone: formData.get('customerPhone'),
+                address: formData.get('customerAddress')
+            };
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            const orderData = {
+                customer: customerData,
+                items: cart,
+                total: total,
+                payment_method: selectedPaymentMethod
+            };
+            
+            // Mostrar loading
+            document.getElementById('checkoutLoading').classList.add('active');
+            document.getElementById('payButton').disabled = true;
+            
+            try {
+                // Guardar orden
+                const order = await backend.saveOrder(orderData);
+                currentOrder = order;
+                
+                if (selectedPaymentMethod === 'efectivo') {
+                    // Procesar pago en efectivo
+                    const payment = await backend.processPayment(order, 'efectivo');
+                    showSuccessPage(order, payment);
+                } else {
+                    // Procesar pago con Mercado Pago
+                    const preference = await backend.createPreference(order);
+                    
+                    // Simular redirección a Mercado Pago
+                    showNotification('Redirigiendo a Mercado Pago...', 'success');
+                    
+                    setTimeout(() => {
+                        showPendingPage(order, preference);
+                    }, 2000);
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error al procesar el pedido', 'error');
+            } finally {
+                document.getElementById('checkoutLoading').classList.remove('active');
+                document.getElementById('payButton').disabled = false;
+            }
+        });
+
+        function showSuccessPage(order, payment) {
+            const orderDetails = document.getElementById('orderDetails');
+            
+            orderDetails.innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3>Detalles del Pedido</h3>
+                    <p><strong>ID del Pedido:</strong> ${order.id}</p>
+                    <p><strong>ID del Pago:</strong> ${payment.id}</p>
+                    <p><strong>Monto:</strong> $${order.total.toLocaleString('es-AR')}</p>
+                    <p><strong>Estado:</strong> <span style="color: #4CAF50;">Aprobado</span></p>
+                    <p><strong>Cliente:</strong> ${order.customer.name}</p>
+                    <p><strong>Email:</strong> ${order.customer.email}</p>
+                    <p><strong>Teléfono:</strong> ${order.customer.phone}</p>
+                    <p><strong>Dirección:</strong> ${order.customer.address}</p>
+                </div>
+            `;
+            
+            showPage('successPage');
+            cart = [];
+            updateCart();
+        }
+
+        function showPendingPage(order, preference) {
+            const pendingDetails = document.getElementById('pendingDetails');
+            
+            pendingDetails.innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3>Detalles del Pedido</h3>
+                    <p><strong>ID del Pedido:</strong> ${order.id}</p>
+                    <p><strong>ID de Preferencia:</strong> ${preference.preference_id}</p>
+                    <p><strong>Monto:</strong> $${order.total.toLocaleString('es-AR')}</p>
+                    <p><strong>Estado:</strong> <span style="color: #ff9800;">Pendiente</span></p>
+                    <p><strong>Cliente:</strong> ${order.customer.name}</p>
+                </div>
+            `;
+            
+            currentOrder = order;
+            showPage('pendingPage');
+            
+            // Simular verificación automática
+            setTimeout(() => {
+                checkPaymentStatus();
+            }, 5000);
+        }
+
+        async function checkPaymentStatus() {
+            if (!currentOrder) return;
+            
+            try {
+                const payment = await backend.getPaymentStatus('pay_' + Date.now());
+                
+                if (payment && payment.status === 'approved') {
+                    showSuccessPage(currentOrder, payment);
+                } else {
+                    showNotification('El pago sigue pendiente', 'info');
+                }
+            } catch (error) {
+                console.error('Error verificando pago:', error);
+            }
+        }
+
+        function showErrorPage(message) {
+            document.getElementById('errorMessage').textContent = message;
+            showPage('errorPage');
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = '#4CAF50';
+            } else if (type === 'error') {
+                notification.style.background = '#ff4444';
+            } else {
+                notification.style.background = '#ff9800';
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function showPage(pageId) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostrar la página seleccionada
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function backToMain() {
+            showPage('mainPage');
+            // Resetear formulario
+            document.getElementById('checkoutForm').reset();
+            selectedPaymentMethod = null;
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.getElementById('payButton').disabled = true;
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCart();
+            showNotification('¡Bienvenido a Food Panda!', 'success');
+        });
+
+        // Agregar animación CSS para notificaciones
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
