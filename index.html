@@ -3,32 +3,1234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Food Panda - Comida deliciosa con entrega rápida. Reservas, pedidos online y más.">
-    <meta name="keywords" content="comida, restaurante, delivery, reservas, food panda">
+    <meta name="description" content="Food Panda - Comida deliciosa con entrega rápida. Pedidos online y más.">
+    <meta name="keywords" content="comida, restaurante, delivery, pedidos, food panda, whatsapp">
     <meta name="author" content="Food Panda">
     <title>Food Panda - Comida Deliciosa</title>
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Food Panda - Comida Deliciosa">
-    <meta property="og:description" content="Comida deliciosa con entrega rápida. Reservas, pedidos online y más.">
+    <meta property="og:description" content="Comida deliciosa con entrega rápida. Pedidos online y más.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link rel="icon" type="image/x-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            border-bottom: 2px solid #000;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .nav-menu ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #666;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #000;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #000;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Shopping Cart */
+        .cart-container {
+            position: fixed;
+            top: 120px;
+            left: 20px;
+            z-index: 999;
+        }
+
+        .cart-icon {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            background: #128C7E;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .cart-dropdown {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .cart-dropdown.active {
+            display: block;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #000;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #000;
+        }
+
+        .cart-items {
+            padding: 1rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+        }
+
+        .cart-item-remove {
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .cart-footer {
+            padding: 1rem;
+            border-top: 1px solid #000;
+        }
+
+        .cart-total {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .cart-checkout {
+            width: 100%;
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .cart-checkout:hover {
+            background: #128C7E;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero-content {
+            text-align: center;
+            color: #fff;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: 2px solid #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            border-color: #128C7E;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 5rem 0;
+            background: #fff;
+        }
+
+        .about-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #000;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #000;
+        }
+
+        .feature h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 400px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 3rem;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 5rem 0;
+            background: #f8f8f8;
+        }
+
+        .gallery-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .gallery-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #000;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #000;
+            height: 250px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 5rem 0;
+            background: #fff;
+        }
+
+        .menu-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .menu-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #000;
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .menu-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .menu-category {
+            display: none;
+        }
+
+        .menu-category.active {
+            display: block;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border: 2px solid #000;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .item-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+        }
+
+        .btn-add-cart {
+            padding: 0.5rem 1rem;
+            border: 2px solid #25D366;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 120px;
+            background: #25D366;
+            color: #fff;
+        }
+
+        .btn-add-cart:hover {
+            background: #128C7E;
+            border-color: #128C7E;
+        }
+
+        /* Location Section */
+        .location-section {
+            padding: 5rem 0;
+            background: #f8f8f8;
+        }
+
+        .location-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .location-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #000;
+        }
+
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .horarios h3,
+        .direccion h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff4444;
+        }
+
+        .status-dot.open {
+            background: #44ff44;
+        }
+
+        .status-text {
+            font-weight: bold;
+        }
+
+        .horarios-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .horarios-table th,
+        .horarios-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #000;
+        }
+
+        .horarios-table th {
+            background: #000;
+            color: #fff;
+        }
+
+        .direccion p {
+            margin-bottom: 0.5rem;
+        }
+
+        .direccion i {
+            margin-right: 0.5rem;
+            color: #000;
+        }
+
+        .map-container {
+            border: 2px solid #000;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 5rem 0;
+            background: #fff;
+        }
+
+        .contact-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #000;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info h3,
+        .social-media h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info i {
+            margin-right: 0.5rem;
+            color: #000;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn.whatsapp {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+
+        .social-btn.whatsapp:hover {
+            background: #128C7E;
+            border-color: #128C7E;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: #fff;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ccc;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #000;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #000;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .product-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .product-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-selector {
+            margin-bottom: 1.5rem;
+        }
+
+        .quantity-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quantity-controls button {
+            background: #000;
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+
+        .quantity-controls button:hover {
+            background: #333;
+        }
+
+        .quantity-controls input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .total-price {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-top: 1px solid #000;
+        }
+
+        .modal-footer button {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .modal-footer .btn-secondary {
+            background: #fff;
+            color: #000;
+        }
+
+        .modal-footer .btn-secondary:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .modal-footer .btn-primary {
+            background: #25D366;
+            color: #fff;
+            border-color: #25D366;
+        }
+
+        .modal-footer .btn-primary:hover {
+            background: #128C7E;
+            border-color: #128C7E;
+        }
+
+        /* WhatsApp Order Form */
+        .whatsapp-form {
+            background: #f8f8f8;
+            border: 2px solid #25D366;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .whatsapp-form h3 {
+            color: #25D366;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .btn-send-whatsapp {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .btn-send-whatsapp:hover {
+            background: #128C7E;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.success {
+            background: #4CAF50;
+        }
+
+        .notification.error {
+            background: #ff4444;
+        }
+
+        .notification.info {
+            background: #ff9800;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #fff;
+                border-top: 2px solid #000;
+            }
+
+            .nav-menu.active {
+                display: block;
+            }
+
+            .nav-menu ul {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content,
+            .location-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .menu-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .item-actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .cart-container {
+                top: 100px;
+                left: 10px;
+            }
+
+            .cart-dropdown {
+                width: 300px;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .nav-container {
+                padding: 1rem 1rem;
+            }
+
+            .hero-section {
+                margin-top: 60px;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-categories {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .menu-item {
+                padding: 1rem;
+            }
+
+            .item-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn-add-cart {
+                min-width: 100px;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .cart-dropdown {
+                width: 280px;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Focus States */
+        button:focus,
+        a:focus,
+        input:focus,
+        select:focus {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
     <header class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="img/favicon.png" alt="Food Panda Logo">
+                <span class="logo-text">Food Panda</span>
             </div>
             <nav class="nav-menu">
                 <ul>
@@ -37,7 +1239,6 @@
                     <li><a href="#galeria" class="nav-link">Galería</a></li>
                     <li><a href="#menu" class="nav-link">Menú</a></li>
                     <li><a href="#ubicacion" class="nav-link">Ubicación</a></li>
-                    <li><a href="#reservas" class="nav-link">Reservas</a></li>
                     <li><a href="#contacto" class="nav-link">Contacto</a></li>
                 </ul>
             </nav>
@@ -52,7 +1253,7 @@
     <!-- Shopping Cart -->
     <div class="cart-container" id="cartContainer">
         <div class="cart-icon" id="cartIcon">
-            <i class="fas fa-shopping-cart"></i>
+            <span>cart</span>
             <span class="cart-count" id="cartCount">0</span>
         </div>
         <div class="cart-dropdown" id="cartDropdown">
@@ -67,25 +1268,23 @@
                 <div class="cart-total">
                     <strong>Total: $<span id="cartTotal">0</span></strong>
                 </div>
-                <button class="cart-checkout" id="cartCheckout">Finalizar Compra</button>
+                <button class="cart-checkout" id="cartCheckout">Pedir por WhatsApp</button>
             </div>
         </div>
     </div>
 
     <!-- Main Content -->
     <main>
-        <!-- Introduction Section -->
+        <!-- Hero Section -->
         <section id="inicio" class="hero-section">
+            <div class="hero-background"></div>
             <div class="hero-content">
                 <h1>Food Panda</h1>
-                <p>Comida deliciosa con la mejor calidad y servicio</p>
+                <p>Comida deliciosa con entrega rápida</p>
                 <div class="hero-buttons">
                     <a href="#menu" class="btn btn-primary">Ver Menú</a>
-                    <a href="#reservas" class="btn btn-secondary">Reservar Mesa</a>
+                    <a href="#contacto" class="btn btn-whatsapp">Pedir por WhatsApp</a>
                 </div>
-            </div>
-            <div class="hero-background">
-                <img src="assets/hero-bg.svg" alt="Food Panda Background">
             </div>
         </section>
 
@@ -99,21 +1298,21 @@
                         <p>Con años de experiencia en la industria gastronómica, nos hemos convertido en el destino preferido para quienes buscan una experiencia culinaria memorable.</p>
                         <div class="about-features">
                             <div class="feature">
-                                <i class="fas fa-utensils"></i>
+                                <div>restaurant</div>
                                 <h3>Comida de Calidad</h3>
                             </div>
                             <div class="feature">
-                                <i class="fas fa-clock"></i>
-                                <h3>Servicio Rápido</h3>
+                                <div>delivery_dining</div>
+                                <h3>Entrega Rápida</h3>
                             </div>
                             <div class="feature">
-                                <i class="fas fa-heart"></i>
-                                <h3>Hecho con Amor</h3>
+                                <div>support_agent</div>
+                                <h3>Servicio Excelente</h3>
                             </div>
                         </div>
                     </div>
                     <div class="about-image">
-                        <img src="assets/about-image.svg" alt="Sobre Food Panda">
+                        <div>Food Panda</div>
                     </div>
                 </div>
             </div>
@@ -125,39 +1324,45 @@
                 <h2>Galería</h2>
                 <div class="gallery-grid">
                     <div class="gallery-item">
-                        <img src="assets/gallery1.svg" alt="Comida 1">
+                        <div>Empanadas</div>
                         <div class="gallery-overlay">
-                            <h3>Especialidades</h3>
+                            <h4>Empanadas Tradicionales</h4>
+                            <p>Hechas con masa casera y rellenos deliciosos</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/gallery2.svg" alt="Comida 2">
+                        <div>Pizzas</div>
                         <div class="gallery-overlay">
-                            <h3>Platos Principales</h3>
+                            <h4>Pizzas Artesanales</h4>
+                            <p>Ingredientes frescos y masa hecha en casa</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/gallery3.svg" alt="Comida 3">
+                        <div>Hamburguesas</div>
                         <div class="gallery-overlay">
-                            <h3>Postres</h3>
+                            <h4>Hamburguesas Gourmet</h4>
+                            <p>Carne 100% vacuna con ingredientes premium</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/gallery4.svg" alt="Local 1">
+                        <div>Bebidas</div>
                         <div class="gallery-overlay">
-                            <h3>Nuestro Local</h3>
+                            <h4>Bebidas Refrescantes</h4>
+                            <p>Amplia variedad de bebidas para acompañar</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/gallery5.svg" alt="Local 2">
+                        <div>Delivery</div>
                         <div class="gallery-overlay">
-                            <h3>Ambiente Acogedor</h3>
+                            <h4>Entrega a Domicilio</h4>
+                            <p>Entrega rápida y segura en toda la ciudad</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/gallery6.svg" alt="Bebidas">
+                        <div>Local</div>
                         <div class="gallery-overlay">
-                            <h3>Bebidas Refrescantes</h3>
+                            <h4>Nuestro Local</h4>
+                            <p>Ambiente cómodo y familiar</p>
                         </div>
                     </div>
                 </div>
@@ -169,164 +1374,132 @@
             <div class="container">
                 <h2>Nuestro Menú</h2>
                 <div class="menu-categories">
-                    <button class="category-btn active" data-category="entradas">Entradas</button>
-                    <button class="category-btn" data-category="platos">Platos Principales</button>
+                    <button class="category-btn active" data-category="empanadas">Empanadas</button>
+                    <button class="category-btn" data-category="pizzas">Pizzas</button>
+                    <button class="category-btn" data-category="hamburguesas">Hamburguesas</button>
                     <button class="category-btn" data-category="bebidas">Bebidas</button>
-                    <button class="category-btn" data-category="postres">Postres</button>
                 </div>
-                
                 <div class="menu-content">
-                    <!-- Entradas -->
-                    <div class="menu-category active" id="entradas">
+                    <div class="menu-category active" id="empanadas">
                         <div class="menu-items">
                             <div class="menu-item">
                                 <div class="item-info">
                                     <h3>Empanadas de Carne</h3>
-                                    <p>Deliciosas empanadas rellenas de carne sazonada</p>
-                                    <span class="price">$2.600</span>
+                                    <p>Deliciosas empanadas de carne criolla, hechas al horno tradicional con masa casera.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Empanadas de Carne" data-price="2600">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Empanadas de Carne" data-price="2600">Agregar al Carrito</button>
+                                    <div class="price">$2.600</div>
+                                    <button class="btn-add-cart" data-product='{"id":"empanadas-carne","name":"Empanadas de Carne","price":2600,"description":"Deliciosas empanadas de carne criolla"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                             <div class="menu-item">
                                 <div class="item-info">
-                                    <h3>Papas Fritas</h3>
-                                    <p>Crujientes papas fritas con salsa especial</p>
-                                    <span class="price">$3.200</span>
+                                    <h3>Empanadas de Pollo</h3>
+                                    <p>Empanadas de pollo con cebolla y especias, horneadas a punto perfecto.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Papas Fritas" data-price="3200">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Papas Fritas" data-price="3200">Agregar al Carrito</button>
+                                    <div class="price">$2.400</div>
+                                    <button class="btn-add-cart" data-product='{"id":"empanadas-pollo","name":"Empanadas de Pollo","price":2400,"description":"Empanadas de pollo con cebolla"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                             <div class="menu-item">
                                 <div class="item-info">
-                                    <h3>Ensalada César</h3>
-                                    <p>Fresca ensalada con pollo y aderezo césar</p>
-                                    <span class="price">$4.500</span>
+                                    <h3>Empanadas de Jamón y Queso</h3>
+                                    <p>Clásicas empanadas con jamón y queso, perfectas para cualquier ocasión.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Ensalada César" data-price="4500">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Ensalada César" data-price="4500">Agregar al Carrito</button>
+                                    <div class="price">$2.200</div>
+                                    <button class="btn-add-cart" data-product='{"id":"empanadas-jamon-queso","name":"Empanadas de Jamón y Queso","price":2200,"description":"Clásicas empanadas con jamón y queso"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Platos Principales -->
-                    <div class="menu-category" id="platos">
+                    <div class="menu-category" id="pizzas">
                         <div class="menu-items">
                             <div class="menu-item">
                                 <div class="item-info">
-                                    <h3>Hamburguesa Clásica</h3>
-                                    <p>Jugosa hamburguesa con carne 100% vacuna</p>
-                                    <span class="price">$8.900</span>
+                                    <h3>Pizza familiar</h3>
+                                    <p>Grande pizza con ingredientes frescos, queso mozzarella y salsa tomate casera.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Hamburguesa Clásica" data-price="8900">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Hamburguesa Clásica" data-price="8900">Agregar al Carrito</button>
+                                    <div class="price">$4.800</div>
+                                    <button class="btn-add-cart" data-product='{"id":"pizza-familiar","name":"Pizza familiar","price":4800,"description":"Grande pizza con ingredientes frescos"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                             <div class="menu-item">
                                 <div class="item-info">
-                                    <h3>Pizza Margarita</h3>
-                                    <p>Clásica pizza con mozzarella, tomate y albahaca</p>
-                                    <span class="price">$12.500</span>
+                                    <h3>Pizza Napolitana</h3>
+                                    <p>Pizza clásica napolitana con tomate, mozzarella, albahaca y aceite de oliva.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Pizza Margarita" data-price="12500">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Pizza Margarita" data-price="12500">Agregar al Carrito</button>
-                                </div>
-                            </div>
-                            <div class="menu-item">
-                                <div class="item-info">
-                                    <h3>Parrillada Mixta</h3>
-                                    <p>Variedad de carnes a la parrilla con acompañamientos</p>
-                                    <span class="price">$18.500</span>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="btn-buy" data-item="Parrillada Mixta" data-price="18500">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Parrillada Mixta" data-price="18500">Agregar al Carrito</button>
+                                    <div class="price">$4.200</div>
+                                    <button class="btn-add-cart" data-product='{"id":"pizza-napolitana","name":"Pizza Napolitana","price":4200,"description":"Pizza clásica napolitana"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Bebidas -->
+                    <div class="menu-category" id="hamburguesas">
+                        <div class="menu-items">
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Hamburguesa Completa</h3>
+                                    <p>Hamburguesa con carne 100% vacuna, lechuga, tomate, queso y papas fritas.</p>
+                                </div>
+                                <div class="item-actions">
+                                    <div class="price">$3.200</div>
+                                    <button class="btn-add-cart" data-product='{"id":"hamburguesa-completa","name":"Hamburguesa Completa","price":3200,"description":"Hamburguesa con carne 100% vacuna"}'>
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="menu-item">
+                                <div class="item-info">
+                                    <h3>Hamburguesa Simple</h3>
+                                    <p>Hamburguesa clásica con carne, lechuga, tomate y salsa especial.</p>
+                                </div>
+                                <div class="item-actions">
+                                    <div class="price">$2.800</div>
+                                    <button class="btn-add-cart" data-product='{"id":"hamburguesa-simple","name":"Hamburguesa Simple","price":2800,"description":"Hamburguesa clásica"}'>
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="menu-category" id="bebidas">
                         <div class="menu-items">
                             <div class="menu-item">
                                 <div class="item-info">
-                                    <h3>Coca-Cola</h3>
-                                    <p>Refrescante bebida cola</p>
-                                    <span class="price">$2.200</span>
+                                    <h3>Gaseosa 500ml</h3>
+                                    <p>Gaseosa de 500ml, fría y refrescante.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Coca-Cola" data-price="2200">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Coca-Cola" data-price="2200">Agregar al Carrito</button>
+                                    <div class="price">$800</div>
+                                    <button class="btn-add-cart" data-product='{"id":"gaseosa-500","name":"Gaseosa 500ml","price":800,"description":"Gaseosa de 500ml"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                             <div class="menu-item">
                                 <div class="item-info">
-                                    <h3>Jugo Natural</h3>
-                                    <p>Jugo de frutas natural y fresco</p>
-                                    <span class="price">$3.500</span>
+                                    <h3>Agua 1L</h3>
+                                    <p>Agua mineral de 1 litro, pura y natural.</p>
                                 </div>
                                 <div class="item-actions">
-                                    <button class="btn-buy" data-item="Jugo Natural" data-price="3500">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Jugo Natural" data-price="3500">Agregar al Carrito</button>
-                                </div>
-                            </div>
-                            <div class="menu-item">
-                                <div class="item-info">
-                                    <h3>Cerveza Artesanal</h3>
-                                    <p>Cerveza local de producción artesanal</p>
-                                    <span class="price">$4.800</span>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="btn-buy" data-item="Cerveza Artesanal" data-price="4800">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Cerveza Artesanal" data-price="4800">Agregar al Carrito</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Postres -->
-                    <div class="menu-category" id="postres">
-                        <div class="menu-items">
-                            <div class="menu-item">
-                                <div class="item-info">
-                                    <h3>Tiramisú</h3>
-                                    <p>Clásico postre italiano con café y mascarpone</p>
-                                    <span class="price">$4.200</span>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="btn-buy" data-item="Tiramisú" data-price="4200">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Tiramisú" data-price="4200">Agregar al Carrito</button>
-                                </div>
-                            </div>
-                            <div class="menu-item">
-                                <div class="item-info">
-                                    <h3>Helado Artesanal</h3>
-                                    <p>Helado cremoso de varios sabores</p>
-                                    <span class="price">$3.800</span>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="btn-buy" data-item="Helado Artesanal" data-price="3800">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Helado Artesanal" data-price="3800">Agregar al Carrito</button>
-                                </div>
-                            </div>
-                            <div class="menu-item">
-                                <div class="item-info">
-                                    <h3>Brownie con Helado</h3>
-                                    <p>Cálido brownie con helado de vainilla</p>
-                                    <span class="price">$5.200</span>
-                                </div>
-                                <div class="item-actions">
-                                    <button class="btn-buy" data-item="Brownie con Helado" data-price="5200">Comprar</button>
-                                    <button class="btn-add-cart" data-item="Brownie con Helado" data-price="5200">Agregar al Carrito</button>
+                                    <div class="price">$600</div>
+                                    <button class="btn-add-cart" data-product='{"id":"agua-1l","name":"Agua 1L","price":600,"description":"Agua mineral de 1 litro"}'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -340,99 +1513,44 @@
             <div class="container">
                 <h2>Ubicación y Horarios</h2>
                 <div class="location-content">
-                    <div class="location-info">
-                        <div class="horarios">
-                            <h3>Horarios de Atención</h3>
-                            <div class="status-indicator">
-                                <span class="status-dot" id="statusDot"></span>
-                                <span class="status-text" id="statusText">Cerrado</span>
-                            </div>
-                            <table class="horarios-table">
+                    <div class="horarios">
+                        <h3>Horarios de Atención</h3>
+                        <div class="status-indicator">
+                            <div class="status-dot open"></div>
+                            <span class="status-text">Abierto ahora</span>
+                        </div>
+                        <table class="horarios-table">
+                            <thead>
                                 <tr>
                                     <th>Día</th>
                                     <th>Horario</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr>
-                                    <td>Lunes</td>
-                                    <td>10:00 - 23:00</td>
-                                </tr>
-                                <tr>
-                                    <td>Martes</td>
-                                    <td>10:00 - 23:00</td>
-                                </tr>
-                                <tr>
-                                    <td>Miércoles</td>
-                                    <td>10:00 - 23:00</td>
-                                </tr>
-                                <tr>
-                                    <td>Jueves</td>
-                                    <td>10:00 - 23:00</td>
-                                </tr>
-                                <tr>
-                                    <td>Viernes</td>
-                                    <td>10:00 - 00:00</td>
+                                    <td>Lunes a Viernes</td>
+                                    <td>11:00 - 23:00</td>
                                 </tr>
                                 <tr>
                                     <td>Sábado</td>
-                                    <td>10:00 - 00:00</td>
+                                    <td>12:00 - 00:00</td>
                                 </tr>
                                 <tr>
                                     <td>Domingo</td>
-                                    <td>10:00 - 22:00</td>
+                                    <td>12:00 - 22:00</td>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="direccion">
-                            <h3>Dirección</h3>
-                            <p><i class="fas fa-map-marker-alt"></i> Calle Principal #123, Ciudad</p>
-                            <p><i class="fas fa-phone"></i> +54 3758 502801</p>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="direccion">
+                        <h3>Dirección</h3>
+                        <p>directions Av. Principal 1234, Ciudad</p>
+                        <p>phone +54 9 11 1234-5678</p>
+                        <p>email info@foodpanda.com</p>
+                        <div class="map-container">
+                            <div>Mapa de Ubicación</div>
                         </div>
                     </div>
-                    <div class="map-container">
-                        <div id="map">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.123456789!2d-58.123456789!3d-34.123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDA3JzIwLjAiTiA1OMKwMDcnMjAuMCJF!5e0!3m2!1ses!2sar!4v1234567890" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Reservation Section -->
-        <section id="reservas" class="reservation-section">
-            <div class="container">
-                <h2>Reservas</h2>
-                <div class="reservation-form">
-                    <form id="reservationForm">
-                        <div class="form-group">
-                            <label for="reservationName">Nombre</label>
-                            <input type="text" id="reservationName" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reservationDate">Fecha</label>
-                            <input type="date" id="reservationDate" name="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reservationTime">Hora</label>
-                            <input type="time" id="reservationTime" name="time" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reservationPeople">Cantidad de Personas</label>
-                            <select id="reservationPeople" name="people" required>
-                                <option value="">Seleccionar...</option>
-                                <option value="1">1 persona</option>
-                                <option value="2">2 personas</option>
-                                <option value="3">3 personas</option>
-                                <option value="4">4 personas</option>
-                                <option value="5">5 personas</option>
-                                <option value="6">6 personas</option>
-                                <option value="7">7 personas</option>
-                                <option value="8">8 personas</option>
-                                <option value="9">9 personas</option>
-                                <option value="10">10+ personas</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Reservar</button>
-                    </form>
                 </div>
             </div>
         </section>
@@ -440,24 +1558,21 @@
         <!-- Contact Section -->
         <section id="contacto" class="contact-section">
             <div class="container">
-                <h2>Contacto y Redes Sociales</h2>
+                <h2>Contacto</h2>
                 <div class="contact-content">
                     <div class="contact-info">
-                        <h3>Contáctanos</h3>
-                        <p><i class="fas fa-phone"></i> +54 3758 502801</p>
-                        <p><i class="fas fa-envelope"></i> info@foodpanda.com</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Calle Principal #123, Ciudad</p>
+                        <h3>Información de Contacto</h3>
+                        <p>phone +54 9 11 1234-5678</p>
+                        <p>email info@foodpanda.com</p>
+                        <p>directions Av. Principal 1234, Ciudad</p>
+                        <p>schedule Horario: 11:00 - 23:00</p>
                     </div>
                     <div class="social-media">
-                        <h3>Síguenos</h3>
+                        <h3>Pide por WhatsApp</h3>
                         <div class="social-buttons">
-                            <a href="https://wa.me/543758502801" target="_blank" class="social-btn whatsapp">
-                                <i class="fab fa-whatsapp"></i>
-                                <span>WhatsApp</span>
-                            </a>
-                            <a href="https://instagram.com/foodpanda" target="_blank" class="social-btn instagram">
-                                <i class="fab fa-instagram"></i>
-                                <span>Instagram</span>
+                            <a href="#" class="social-btn whatsapp" id="whatsappDirect">
+                                <span>whatsapp</span>
+                                <span>Pedir Ahora</span>
                             </a>
                         </div>
                     </div>
@@ -466,63 +1581,20 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Food Panda</h3>
-                    <p>Comida deliciosa con la mejor calidad</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Enlaces Rápidos</h4>
-                    <ul>
-                        <li><a href="#inicio">Inicio</a></li>
-                        <li><a href="#menu">Menú</a></li>
-                        <li><a href="#reservas">Reservas</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#politica-privacidad">Política de Privacidad</a></li>
-                        <li><a href="#terminos-condiciones">Términos y Condiciones</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Food Panda. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Floating Buttons -->
-    <div class="floating-buttons">
-        <a href="https://wa.me/543758502801?text=Quiero%20hacer%20una%20reserva" target="_blank" class="floating-btn whatsapp-reserve">
-            <i class="fab fa-whatsapp"></i>
-            <span>Reservar</span>
-        </a>
-        <a href="https://maps.google.com/?q=Calle+Principal+123,Ciudad" target="_blank" class="floating-btn directions">
-            <i class="fas fa-directions"></i>
-            <span>Cómo Llegar</span>
-        </a>
-    </div>
-
     <!-- Purchase Modal -->
     <div class="modal" id="purchaseModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Comprar Producto</h3>
+                <h3>Agregar al Carrito</h3>
                 <button class="modal-close" id="modalClose">×</button>
             </div>
             <div class="modal-body">
                 <div class="product-info">
                     <h4 id="modalProductName">Producto</h4>
-                    <p class="product-price">$<span id="modalProductPrice">0</span> c/u</p>
+                    <div class="product-price" id="modalProductPrice">Precio: $0</div>
                 </div>
                 <div class="quantity-selector">
-                    <label for="quantity">Cantidad:</label>
+                    <label for="quantity">Cantidad</label>
                     <div class="quantity-controls">
                         <button type="button" id="quantityDecrease">-</button>
                         <input type="number" id="quantity" value="1" min="1" max="99">
@@ -534,13 +1606,511 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
-                <button class="btn btn-primary" id="modalConfirm">Finalizar Compra</button>
+                <button type="button" class="btn-secondary" id="modalCancel">Cancelar</button>
+                <button type="button" class="btn-primary" id="modalConfirm">Agregar</button>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <!-- WhatsApp Order Modal -->
+    <div class="modal" id="whatsappModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Pedir por WhatsApp</h3>
+                <button class="modal-close" id="whatsappModalClose">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="whatsapp-form">
+                    <h3>Completa tus datos para enviar el pedido</h3>
+                    <div class="form-group">
+                        <label for="customerName">Nombre Completo</label>
+                        <input type="text" id="customerName" name="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Teléfono</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Dirección de Entrega</label>
+                        <input type="text" id="customerAddress" name="customerAddress" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerNotes">Notas Adicionales</label>
+                        <textarea id="customerNotes" name="customerNotes" placeholder="Alguna instrucción especial..."></textarea>
+                    </div>
+                    <div id="orderSummary" style="background: #fff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <h4>Resumen del Pedido:</h4>
+                        <div id="orderItems"></div>
+                        <div style="text-align: right; font-weight: bold; margin-top: 1rem;">
+                            Total: $<span id="orderTotal">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" id="whatsappModalCancel">Cancelar</button>
+                <button type="button" class="btn-primary" id="whatsappModalSend">
+                    <span>whatsapp</span>
+                    Enviar por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Food Panda</h4>
+                    <p>Comida deliciosa con entrega rápida</p>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#menu">Menú</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horarios</h4>
+                    <ul>
+                        <li>Lunes a Viernes: 11:00 - 23:00</li>
+                        <li>Sábado: 12:00 - 00:00</li>
+                        <li>Domingo: 12:00 - 22:00</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li>+54 9 11 1234-5678</li>
+                        <li>info@foodpanda.com</li>
+                        <li>Av. Principal 1234</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Food Panda. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Application State
+        let cart = [];
+        let currentProduct = null;
+
+        // DOM Elements
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const cartIcon = document.getElementById('cartIcon');
+        const cartDropdown = document.getElementById('cartDropdown');
+        const cartClose = document.getElementById('cartClose');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartCheckout = document.getElementById('cartCheckout');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const menuCategories = document.querySelectorAll('.menu-category');
+        const addCartBtns = document.querySelectorAll('.btn-add-cart');
+        const purchaseModal = document.getElementById('purchaseModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const quantityDecrease = document.getElementById('quantityDecrease');
+        const quantityIncrease = document.getElementById('quantityIncrease');
+        const quantityInput = document.getElementById('quantity');
+        const modalProductName = document.getElementById('modalProductName');
+        const modalProductPrice = document.getElementById('modalProductPrice');
+        const modalTotal = document.getElementById('modalTotal');
+        const whatsappModal = document.getElementById('whatsappModal');
+        const whatsappModalClose = document.getElementById('whatsappModalClose');
+        const whatsappModalCancel = document.getElementById('whatsappModalCancel');
+        const whatsappModalSend = document.getElementById('whatsappModalSend');
+        const whatsappDirect = document.getElementById('whatsappDirect');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            setupNavigation();
+            setupCart();
+            setupMenuCategories();
+            setupPurchaseModal();
+            setupWhatsAppModal();
+            updateRestaurantStatus();
+            setInterval(updateRestaurantStatus, 60000);
+        }
+
+        // Navigation
+        function setupNavigation() {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        const offset = 80;
+                        const targetPosition = targetSection.offsetTop - offset;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 100) {
+                    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    navbar.style.backdropFilter = 'blur(10px)';
+                } else {
+                    navbar.style.background = '#fff';
+                    navbar.style.backdropFilter = 'none';
+                }
+            });
+        }
+
+        // Cart Functions
+        function setupCart() {
+            cartIcon.addEventListener('click', function() {
+                cartDropdown.classList.toggle('active');
+            });
+
+            cartClose.addEventListener('click', function() {
+                cartDropdown.classList.remove('active');
+            });
+
+            cartCheckout.addEventListener('click', function() {
+                if (cart.length === 0) {
+                    showNotification('El carrito está vacío', 'error');
+                    return;
+                }
+                showWhatsAppModal();
+            });
+
+            updateCart();
+        }
+
+        function addToCart(product, quantity = 1) {
+            const existingItem = cart.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: quantity
+                });
+            }
+            
+            updateCart();
+            showNotification(`${product.name} agregado al carrito`, 'success');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        function updateCart() {
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Tu carrito está vacío</p>';
+                cartTotal.textContent = '0';
+            } else {
+                let cartHTML = '';
+                let total = 0;
+                
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal;
+                    
+                    cartHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <strong>${item.name}</strong>
+                                <small>Cantidad: ${item.quantity}</small>
+                            </div>
+                            <div class="cart-item-price">$${subtotal.toLocaleString('es-AR')}</div>
+                            <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">×</button>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = cartHTML;
+                cartTotal.textContent = total.toLocaleString('es-AR');
+            }
+            
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        // Menu Categories
+        function setupMenuCategories() {
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    menuCategories.forEach(cat => cat.classList.remove('active'));
+                    document.getElementById(category).classList.add('active');
+                });
+            });
+
+            addCartBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productData = JSON.parse(this.getAttribute('data-product'));
+                    currentProduct = productData;
+                    showPurchaseModal(productData);
+                });
+            });
+        }
+
+        // Purchase Modal
+        function setupPurchaseModal() {
+            modalClose.addEventListener('click', function() {
+                purchaseModal.classList.remove('active');
+            });
+
+            modalCancel.addEventListener('click', function() {
+                purchaseModal.classList.remove('active');
+            });
+
+            modalConfirm.addEventListener('click', function() {
+                const quantity = parseInt(quantityInput.value);
+                if (currentProduct && quantity > 0) {
+                    addToCart(currentProduct, quantity);
+                    purchaseModal.classList.remove('active');
+                }
+            });
+
+            quantityDecrease.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                    updateModalTotal();
+                }
+            });
+
+            quantityIncrease.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue < 99) {
+                    quantityInput.value = currentValue + 1;
+                    updateModalTotal();
+                }
+            });
+
+            quantityInput.addEventListener('input', updateModalTotal);
+        }
+
+        function showPurchaseModal(product) {
+            modalProductName.textContent = product.name;
+            modalProductPrice.textContent = `Precio: $${product.price.toLocaleString('es-AR')}`;
+            quantityInput.value = 1;
+            updateModalTotal();
+            purchaseModal.classList.add('active');
+        }
+
+        function updateModalTotal() {
+            const quantity = parseInt(quantityInput.value);
+            const total = currentProduct.price * quantity;
+            modalTotal.textContent = total.toLocaleString('es-AR');
+        }
+
+        // WhatsApp Modal
+        function setupWhatsAppModal() {
+            whatsappModalClose.addEventListener('click', function() {
+                whatsappModal.classList.remove('active');
+            });
+
+            whatsappModalCancel.addEventListener('click', function() {
+                whatsappModal.classList.remove('active');
+            });
+
+            whatsappModalSend.addEventListener('click', function() {
+                sendWhatsAppOrder();
+            });
+
+            whatsappDirect.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (cart.length === 0) {
+                    showNotification('Agrega productos al carrito primero', 'error');
+                    return;
+                }
+                showWhatsAppModal();
+            });
+        }
+
+        function showWhatsAppModal() {
+            updateOrderSummary();
+            whatsappModal.classList.add('active');
+        }
+
+        function updateOrderSummary() {
+            const orderItems = document.getElementById('orderItems');
+            const orderTotal = document.getElementById('orderTotal');
+            
+            if (cart.length === 0) {
+                orderItems.innerHTML = '<p>El carrito está vacío</p>';
+                orderTotal.textContent = '0';
+                return;
+            }
+            
+            let itemsHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                itemsHTML += `
+                    <div style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                        <strong>${item.name}</strong><br>
+                        <small>Cantidad: ${item.quantity} - $${subtotal.toLocaleString('es-AR')}</small>
+                    </div>
+                `;
+            });
+            
+            orderItems.innerHTML = itemsHTML;
+            orderTotal.textContent = total.toLocaleString('es-AR');
+        }
+
+        function sendWhatsAppOrder() {
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            const notes = document.getElementById('customerNotes').value;
+            
+            if (!name || !phone || !address) {
+                showNotification('Por favor completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                showNotification('El carrito está vacío', 'error');
+                return;
+            }
+            
+            // Create WhatsApp message
+            let message = `*Nuevo Pedido - Food Panda*\n\n`;
+            message += `*Datos del Cliente:*\n`;
+            message += `Nombre: ${name}\n`;
+            message += `Teléfono: ${phone}\n`;
+            message += `Dirección: ${address}\n`;
+            if (notes) {
+                message += `Notas: ${notes}\n`;
+            }
+            message += `\n*Pedido:*\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `-${item.name} x${item.quantity}: $${subtotal.toLocaleString('es-AR')}\n`;
+            });
+            
+            message += `\n*Total: $${total.toLocaleString('es-AR')}*\n`;
+            message += `\n*Gracias por tu pedido!*`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappNumber = '5491112345678'; // Replace with actual WhatsApp number
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            // Open WhatsApp
+            window.open(whatsappURL, '_blank');
+            
+            // Clear cart and close modal
+            cart = [];
+            updateCart();
+            whatsappModal.classList.remove('active');
+            
+            // Reset form
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerAddress').value = '';
+            document.getElementById('customerNotes').value = '';
+            
+            showNotification('Pedido enviado a WhatsApp', 'success');
+        }
+
+        // Restaurant Status
+        function updateRestaurantStatus() {
+            const now = new Date();
+            const day = now.getDay();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours * 60 + minutes;
+            
+            let isOpen = false;
+            let statusText = 'Cerrado';
+            
+            if (day >= 1 && day <= 5) { // Monday to Friday
+                if (currentTime >= 660 && currentTime <= 1380) { // 11:00 to 23:00
+                    isOpen = true;
+                    statusText = 'Abierto';
+                }
+            } else if (day === 6) { // Saturday
+                if (currentTime >= 720 && currentTime <= 1440) { // 12:00 to 24:00
+                    isOpen = true;
+                    statusText = 'Abierto';
+                }
+            } else if (day === 0) { // Sunday
+                if (currentTime >= 720 && currentTime <= 1320) { // 12:00 to 22:00
+                    isOpen = true;
+                    statusText = 'Abierto';
+                }
+            }
+            
+            const statusDot = document.querySelector('.status-dot');
+            const statusTextElement = document.querySelector('.status-text');
+            
+            if (statusDot && statusTextElement) {
+                if (isOpen) {
+                    statusDot.classList.add('open');
+                    statusTextElement.textContent = statusText + ' ahora';
+                } else {
+                    statusDot.classList.remove('open');
+                    statusTextElement.textContent = statusText;
+                }
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Make functions global
+        window.removeFromCart = removeFromCart;
+    </script>
 </body>
 </html>
